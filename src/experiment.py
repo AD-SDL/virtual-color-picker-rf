@@ -4,7 +4,13 @@ from typing import List
 import numpy as np
 
 from solver import DummySolver, GridSearchSolver  # noqa
-from utils import grade_color, grade_experiment, visualize_final_run, visualize_mid_run
+from utils import (
+    grade_color,
+    grade_experiment,
+    mix_simulated_ratios,
+    visualize_final_run,
+    visualize_mid_run,
+)
 
 
 def find_best_color(experiment: List[List[int]], target_color: List[int]) -> List[int]:
@@ -25,9 +31,13 @@ def run(
     best_diff = float("inf")
     while num_trials < experiment_budget:
         # Run the experiment
-        experiment_colors = GridSearchSolver.run_iteration(
+        experiment_ratios = GridSearchSolver.run_iteration(
             target_color, input_colors, previous_experiment_colors, pop_size=8
         )
+        # Since we are simulating, we need to mix the ratios with the input colors
+        experiment_colors = [
+            mix_simulated_ratios(ratios, input_colors) for ratios in experiment_ratios
+        ]
 
         experiment_grades = grade_experiment(experiment_colors, target_color)
         trial_best_color = find_best_color(experiment_colors, target_color)

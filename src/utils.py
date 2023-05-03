@@ -1,6 +1,7 @@
 from typing import List
 
 import matplotlib.pyplot as plt
+import mixbox
 import numpy as np
 from colormath.color_conversions import convert_color
 from colormath.color_diff import delta_e_cie2000
@@ -9,7 +10,35 @@ from colormath.color_diff import delta_e_cie2000
 from colormath.color_objects import LabColor, sRGBColor
 
 
-def grade_color(color_rgb: List[int], target_rgb: List[int]) -> float:
+def mix_simulated_ratios(
+    ratio: List[float], input_colors: List[List[float]], normalize_output: bool = True
+) -> List[float]:
+    assert len(ratio) == len(input_colors)
+
+    upscaled_input_colors = []
+    for color in input_colors:
+        if max(color) <= 1:
+            upscaled_input_colors.append([c * 255 for c in color])
+        else:
+            upscaled_input_colors.append(color)
+
+    latent_colors = [mixbox.rgb_to_latent(color) for color in upscaled_input_colors]
+
+    z_mix = [0 for _ in range(mixbox.LATENT_SIZE)]
+    for i in range(len(z_mix)):
+        for j in range(len(ratio)):
+            z_mix[i] += ratio[j] * latent_colors[j][i]
+
+    rgb_mix = mixbox.latent_to_rgb(z_mix)
+    # Normalize to [0, 1]
+    if normalize_output:
+        rgb_mix = [c / 255 for c in rgb_mix]
+    return rgb_mix
+
+
+def grade_color(
+    color_rgb: List[int], target_rgb: List[int], simulation: bool = True
+) -> float:
     """Grade a color based on its distance from the target color."""
     if not isinstance(color_rgb, sRGBColor):
         color_rgb = sRGBColor(
