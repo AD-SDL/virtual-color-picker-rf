@@ -14,6 +14,9 @@ from utils import (
 
 
 def find_best_color(experiment: List[List[int]], target_color: List[int]) -> List[int]:
+    """
+    Find the best color from an experiment and return its rgb value.
+    """
     experiment_grades = np.array(grade_experiment(experiment, target_color))
 
     return experiment[np.argmin(experiment_grades)]
@@ -53,8 +56,11 @@ def run(
         # Update the previous experiment colors
         previous_experiment_colors += experiment_colors
 
-        # Visualize
         if visualize:
+            # NOTE: solver_out_dim is (run_size, 3)
+            # NOTE: This appears unecessarily complicated, but it comes from using a CV2
+            # function to grade each plate from a picture, feel free to adapt with your
+            # own function
             visualize_mid_run(experiment_colors, trial_best_color, target_color, (8, 3))
 
     if visualize:

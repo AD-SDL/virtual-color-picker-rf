@@ -13,6 +13,22 @@ from colormath.color_objects import LabColor, sRGBColor
 def mix_simulated_ratios(
     ratio: List[float], input_colors: List[List[float]], normalize_output: bool = True
 ) -> List[float]:
+    """Mix the input colors with the given ratios using mixbox for paint accurate simulation.
+
+    Parameters
+    ----------
+    ratio : List[float]
+        The ratios to mix the input colors with. 
+    input_colors : List[List[float]]
+        The input colors to mix. 
+    normalize_output : bool, optional
+        Normalize outputs to values between 0 and 1, by default True
+
+    Returns
+    -------
+    List[float]
+        Output color in rgb space
+    """
     assert len(ratio) == len(input_colors)
 
     upscaled_input_colors = []
@@ -39,7 +55,7 @@ def mix_simulated_ratios(
 def grade_color(
     color_rgb: List[int], target_rgb: List[int], simulation: bool = True
 ) -> float:
-    """Grade a color based on its distance from the target color."""
+    """Grade a color based on its distance from the target color in delta_e units."""
     if not isinstance(color_rgb, sRGBColor):
         color_rgb = sRGBColor(
             *color_rgb, is_upscaled=True if max(color_rgb) > 1 else False
