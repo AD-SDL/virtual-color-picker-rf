@@ -32,7 +32,7 @@ def run(
     while num_trials < experiment_budget:
         # Run the experiment
         experiment_ratios = GridSearchSolver.run_iteration(
-            target_color, input_colors, previous_experiment_colors, pop_size=8
+            target_color, input_colors, previous_experiment_colors, run_size=8
         )
         # Since we are simulating, we need to mix the ratios with the input colors
         experiment_colors = [
@@ -40,7 +40,7 @@ def run(
         ]
 
         # I am not using this for any solver, but you can by passing it as a kwarg
-        experiment_grades = grade_experiment(experiment_colors, target_color) # noqa
+        experiment_grades = grade_experiment(experiment_colors, target_color)  # noqa
         trial_best_color = find_best_color(experiment_colors, target_color)
         color_diff = grade_color(trial_best_color, target_color)
         if color_diff < best_diff:
@@ -63,17 +63,28 @@ def run(
 
 if __name__ == "__main__":
     parser = ArgumentParser()
-    parser.add_argument("--experiment_budget", type=int, default=96)
+    parser.add_argument(
+        "--experiment_budget",
+        type=int,
+        default=96,
+        help="The total number of color mixings allowed",
+    )
     parser.add_argument(
         "--target_color",
         metavar="N",
         type=int,
         nargs=3,
-        help="a list of 3 integers",
+        help="a list of 3 integers representing the target color in rgb",
         default=[101, 173, 95],
     )
-    parser.add_argument("--random_target", action="store_true")
-    parser.add_argument("--visualize", action="store_true")
+    parser.add_argument(
+        "--random_target", action="store_true", help="Use a random rgb color"
+    )
+    parser.add_argument(
+        "--visualize",
+        action="store_true",
+        help="Visualize the experiment with a popup window each time the loop runs",
+    )
     args = parser.parse_args()
 
     target_color = args.target_color
@@ -83,7 +94,7 @@ if __name__ == "__main__":
     experiment_budget = args.experiment_budget
     visualize = args.visualize
 
-    # These colors are from the RPL color picker setup
+    # These colors are from the RPL color picker setup do not change.
     input_colors = [
         [255, 5, 123],  # magenta printer ink
         [0, 99, 183],   # cyan printer ink
