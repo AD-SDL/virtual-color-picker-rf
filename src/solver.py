@@ -15,8 +15,7 @@ code in `src/experiment.py`.
 class DummySolver:
     @staticmethod
     def run_iteration(
-        target_color: List[float],
-        input_colors: List[List[float]],
+        input_colors: Optional[List[List[float]]] = None,
         previous_experiment_colors: Optional[List[List[float]]] = None,
         run_size: int = 96,
         **kwargs,
@@ -27,8 +26,7 @@ class DummySolver:
 class GridSearchSolver:
     @staticmethod
     def run_iteration(
-        target_color: List[float],
-        input_colors: List[List[float]],
+        input_colors: Optional[List[List[float]]] = None,
         previous_experiment_colors: Optional[List[List[float]]] = None,
         run_size: int = 96,
         **kwargs,
