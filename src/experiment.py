@@ -16,7 +16,7 @@ from utils import (
 def find_best_color(experiment: List[List[int]], target_color: List[int]) -> List[int]:
     experiment_grades = np.array(grade_experiment(experiment, target_color))
 
-    return experiment[np.argmax(experiment_grades)]
+    return experiment[np.argmin(experiment_grades)]
 
 
 def run(
@@ -39,14 +39,13 @@ def run(
             mix_simulated_ratios(ratios, input_colors) for ratios in experiment_ratios
         ]
 
-        experiment_grades = grade_experiment(experiment_colors, target_color)
+        # I am not using this for any solver, but you can by passing it as a kwarg
+        experiment_grades = grade_experiment(experiment_colors, target_color) # noqa
         trial_best_color = find_best_color(experiment_colors, target_color)
         color_diff = grade_color(trial_best_color, target_color)
         if color_diff < best_diff:
             best_color = trial_best_color
             best_diff = color_diff
-
-        print(experiment_grades)
 
         # Update the experiment budget
         num_trials += len(experiment_colors)
@@ -73,18 +72,22 @@ if __name__ == "__main__":
         help="a list of 3 integers",
         default=[101, 173, 95],
     )
+    parser.add_argument("--random_target", action="store_true")
     parser.add_argument("--visualize", action="store_true")
     args = parser.parse_args()
 
     target_color = args.target_color
+    if args.random_target:
+        target_color = np.random.randint(0, 256, size=3).tolist()
+
     experiment_budget = args.experiment_budget
     visualize = args.visualize
 
-    # TODO fix this for RPL colors
+    # These colors are from the RPL color picker setup
     input_colors = [
-        [1.0, 0, 0],
-        [0, 1.0, 0],
-        [0, 0, 1.0],
+        [255, 5, 123],  # magenta printer ink
+        [0, 99, 183],   # cyan printer ink
+        [240, 203, 0],  # yellow printer ink
     ]
 
     run(target_color, input_colors, experiment_budget, visualize)

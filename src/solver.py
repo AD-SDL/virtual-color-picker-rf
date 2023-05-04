@@ -8,6 +8,7 @@ class DummySolver:
         input_colors: List[List[float]],
         previous_experiment_colors: Optional[List[List[float]]] = None,
         pop_size: int = 96,
+        **kwargs,
     ) -> List[List[float]]:
         return [[1.0, 0.0, 0.0] for _ in range(pop_size)]
 
@@ -19,6 +20,7 @@ class GridSearchSolver:
         input_colors: List[List[float]],
         previous_experiment_colors: Optional[List[List[float]]] = None,
         pop_size: int = 96,
+        **kwargs,
     ) -> List[List[float]]:
         # Calculate the number of points per axis
         num_points_per_axis = int(round(pop_size ** (1 / 3)))
