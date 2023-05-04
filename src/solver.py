@@ -3,11 +3,11 @@ from typing import List, Optional
 
 """
 In order to work with the RPL please follow the examples below.
-Create a class with a static method called `run_iteration` that takes the arguments 
+Create a class with a static method called `run_iteration` that takes the arguments
 shown below. The method should return a list of lists of floats. Each list of floats
-represents a color in RGB space. The length of the list should be equal to the `run_size`. 
+represents a color in RGB space. The length of the list should be equal to the `run_size`.
 
-For submission, please submit youre whole class, and make sure it runs with the 
+For submission, please submit youre whole class, and make sure it runs with the
 code in `src/experiment.py`.
 """
 

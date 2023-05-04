@@ -18,9 +18,9 @@ def mix_simulated_ratios(
     Parameters
     ----------
     ratio : List[float]
-        The ratios to mix the input colors with. 
+        The ratios to mix the input colors with.
     input_colors : List[List[float]]
-        The input colors to mix. 
+        The input colors to mix.
     normalize_output : bool, optional
         Normalize outputs to values between 0 and 1, by default True
 
