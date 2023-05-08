@@ -110,6 +110,8 @@ def visualize_mid_run(
         vis_actual_current_plate = np.ones_like(vis_predicted_current_plate)
         note = " (No measured plate provided)"
 
+    color_diff = grade_color(cur_best_color, target_color)
+
     axarr[1][0].imshow(vis_predicted_current_plate)
     axarr[1][0].set_title("Predicted plate colors")
     axarr[1][1].imshow(vis_actual_current_plate)
@@ -117,7 +119,7 @@ def visualize_mid_run(
     axarr[0][1].imshow([[target_color]])
     axarr[0][1].set_title("Target Color")
     axarr[0][0].imshow([[cur_best_color]])
-    axarr[0][0].set_title("Experiment best color")
+    axarr[0][0].set_title(f"Experiment best color with difference {color_diff}")
     plt.show()
 
 
