@@ -5,6 +5,8 @@ This is the repository for the third assignment of the Auto-Labs 2023 course.
 ## Installation 
 
 ```
+conda create -n color-picker-assignment python=3.9
+conda activate color-picker-assignment
 pip install -r requirements.txt
 ```
 
