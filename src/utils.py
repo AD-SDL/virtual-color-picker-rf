@@ -113,7 +113,7 @@ def visualize_mid_run(
     color_diff = grade_color(cur_best_color, target_color)
 
     axarr[1][0].imshow(vis_predicted_current_plate)
-    axarr[1][0].set_title("Predicted plate colors")
+    axarr[1][0].set_title("Predicted plate colors (predicted by simulated mixing alogrithm)")
     axarr[1][1].imshow(vis_actual_current_plate)
     axarr[1][1].set_title(f"Measured plate colors{note}")
     axarr[0][1].imshow([[target_color]])
