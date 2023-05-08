@@ -35,7 +35,7 @@ def run(
     while num_trials < experiment_budget:
         # Run the experiment
         experiment_ratios = GridSearchSolver.run_iteration(
-            target_color, input_colors, previous_experiment_colors, run_size=8
+            input_colors, previous_experiment_colors, run_size=8
         )
         # Since we are simulating, we need to mix the ratios with the input colors
         experiment_colors = [
@@ -103,7 +103,7 @@ if __name__ == "__main__":
     # These colors are from the RPL color picker setup do not change.
     input_colors = [
         [255, 5, 123],  # magenta printer ink
-        [0, 99, 183],   # cyan printer ink
+        [0, 99, 183],  # cyan printer ink
         [240, 203, 0],  # yellow printer ink
     ]
 
