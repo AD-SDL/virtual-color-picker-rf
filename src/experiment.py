@@ -3,7 +3,7 @@ from typing import List
 
 import numpy as np
 
-from solver import DummySolver, GridSearchSolver  # noqa
+from solver import InterpolationSolver, GridSearchSolver, RFSolver  # noqa
 from utils import (
     grade_color,
     grade_experiment,
@@ -27,15 +27,20 @@ def run(
     input_colors: List[List[int]],
     experiment_budget: int = 96,
     visualize: bool = False,
+    run_size: int = 2,
 ):
     num_trials = 0
-    previous_experiment_colors = []
+    previous_experiment_ratios = []
+    previous_grades = []
     best_color = None
     best_diff = float("inf")
     while num_trials < experiment_budget:
         # Run the experiment
-        experiment_ratios = GridSearchSolver.run_iteration(
-            input_colors, previous_experiment_colors, run_size=8
+        experiment_ratios = RFSolver.run_iteration(
+            input_colors,
+            previous_experiment_ratios,
+            run_size=run_size,
+            previous_grades=previous_grades,
         )
         # Since we are simulating, we need to mix the ratios with the input colors
         experiment_colors = [
@@ -53,15 +58,18 @@ def run(
         # Update the experiment budget
         num_trials += len(experiment_colors)
 
-        # Update the previous experiment colors
-        previous_experiment_colors += experiment_colors
+        # Update the previous experiment colors, grades
+        previous_experiment_ratios += experiment_ratios
+        previous_grades += experiment_grades
 
         if visualize:
             # NOTE: solver_out_dim is (run_size, 3)
             # NOTE: This appears unecessarily complicated, but it comes from using a CV2
             # function to grade each plate from a picture, feel free to adapt with your
             # own function
-            visualize_mid_run(experiment_colors, trial_best_color, target_color, (8, 3))
+            visualize_mid_run(
+                experiment_colors, trial_best_color, target_color, (run_size, 3)
+            )
 
     if visualize:
         visualize_final_run(best_color, target_color, best_diff)
@@ -84,6 +92,9 @@ if __name__ == "__main__":
         default=[101, 173, 95],
     )
     parser.add_argument(
+        "--run_size", type=int, default=2, help="The number of wells to fill per iteration of the solver"
+    )
+    parser.add_argument(
         "--random_target", action="store_true", help="Use a random rgb color"
     )
     parser.add_argument(
@@ -99,6 +110,7 @@ if __name__ == "__main__":
 
     experiment_budget = args.experiment_budget
     visualize = args.visualize
+    run_size = args.run_size
 
     # These colors are from the RPL color picker setup do not change.
     input_colors = [
@@ -107,4 +119,4 @@ if __name__ == "__main__":
         [240, 203, 0],  # yellow printer ink
     ]
 
-    run(target_color, input_colors, experiment_budget, visualize)
+    run(target_color, input_colors, experiment_budget, visualize, run_size)
