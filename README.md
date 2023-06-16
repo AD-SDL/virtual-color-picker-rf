@@ -16,7 +16,7 @@ pip install -r requirements.txt
 Example usage: 
 ```
 # From the src directory
-python experiment.py --visualize --random_target
+python experiment.py --visualize --random_target --experiment_budget 96 --run_size 6
 ```
 
 Help: 
