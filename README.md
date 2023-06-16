@@ -42,6 +42,4 @@ optional arguments:
 - Try to see if you can track how much of each color is used in the experiment 
   - assume a cell in a wellplate holds 300 uL of liquid, and that we are filling them to capacity every time, 
     try and add some code that tracks how much of each color is used in the experiment and tells you at the very end of the script 
-- Once you have tracking, assume that we have 10mL of each color and as you run the experiments, throw an error if you see that the experiment will use more than 10mL of any color
-
-  
+- Once you have tracking, assume that we have 10mL of each color and as you run the experiments, throw an error if you see that the current iteration will use all the remaining volume of any color. 
