@@ -2,3 +2,4 @@ numpy==1.22
 colormath
 pymixbox
 matplotlib
+scikit-learn==1.2.2
